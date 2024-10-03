@@ -1,12 +1,8 @@
-[
-build
-]
-  command = "ng build --configuration production"
+[build]
   publish = "dist/jogo/browser"
+  command = "ng build --configuration production"
 
-[[
-redirects
-]]
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
