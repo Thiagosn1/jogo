@@ -1,0 +1,28 @@
+<div class="tela-inicial">
+  <div class="background-images">
+    <div class="bioma-image amazonia"></div>
+    <div class="bioma-image cerrado"></div>
+    <div class="bioma-image mata-atlantica"></div>
+    <div class="bioma-image caatinga"></div>
+    <div class="bioma-image pampa"></div>
+    <div class="bioma-image pantanal"></div>
+  </div>
+  <div class="content">
+    <h1>Descubra os Biomas Brasileiros</h1>
+    <h2>O jogo que transforma educação em aventura</h2>
+
+    <div class="input-container">
+      <mat-form-field>
+        <input
+          matInput
+          [(ngModel)]="nomeJogador"
+          placeholder="Digite seu nome"
+        />
+      </mat-form-field>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="iniciarJogo()">
+      JOGAR
+    </button>
+  </div>
+</div>

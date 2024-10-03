@@ -1,0 +1,102 @@
+<div
+  class="jogo-container"
+  [ngStyle]="{ 'background-image': 'url(' + biomas[biomaAtual].imagem + ')' }"
+>
+  <mat-card *ngIf="!jogoFinalizado">
+    <mat-card-header>
+      <mat-card-title>{{ biomas[biomaAtual].nome }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ biomas[biomaAtual].descricao }}</p>
+
+      <ng-container *ngIf="desafioAtual === 1">
+        <p>
+          <em>Curiosidade: {{ biomas[biomaAtual].curiosidade1 }}</em>
+        </p>
+        <h3>Desafio 1:</h3>
+        <p>{{ biomas[biomaAtual].desafio1.pergunta }}</p>
+      </ng-container>
+
+      <ng-container *ngIf="desafioAtual === 2">
+        <p>
+          <em>Curiosidade: {{ biomas[biomaAtual].curiosidade2 }}</em>
+        </p>
+        <h3>Desafio 2:</h3>
+        <p>{{ biomas[biomaAtual].desafio2.pergunta }}</p>
+      </ng-container>
+
+      <mat-button-toggle-group
+        *ngIf="!mostrarResposta"
+        [disabled]="mostrarResposta"
+      >
+        <mat-button-toggle
+          *ngFor="
+            let resposta of desafioAtual === 1
+              ? biomas[biomaAtual].desafio1.respostas
+              : biomas[biomaAtual].desafio2.respostas;
+            let i = index
+          "
+          (click)="verificarResposta(i)"
+        >
+          {{ resposta }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <div *ngIf="mostrarResposta" class="respostas">
+        <p
+          *ngFor="
+            let resposta of desafioAtual === 1
+              ? biomas[biomaAtual].desafio1.respostas
+              : biomas[biomaAtual].desafio2.respostas;
+            let i = index
+          "
+          [ngClass]="{
+            correta:
+              i ===
+              (desafioAtual === 1
+                ? biomas[biomaAtual].desafio1.respostaCorreta
+                : biomas[biomaAtual].desafio2.respostaCorreta),
+            incorreta:
+              i === respostaSelecionada &&
+              i !==
+                (desafioAtual === 1
+                  ? biomas[biomaAtual].desafio1.respostaCorreta
+                  : biomas[biomaAtual].desafio2.respostaCorreta)
+          }"
+        >
+          {{ resposta }}
+        </p>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="mostrarResposta"
+        (click)="proximoDesafio()"
+      >
+        {{
+          desafioAtual === 1
+            ? "Próximo Desafio"
+            : biomaAtual < biomas.length - 1
+            ? "Próximo Bioma"
+            : "Finalizar Jogo"
+        }}
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="jogoFinalizado">
+    <mat-card-header>
+      <mat-card-title>Parabéns, {{ nomeJogador }}!</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Você completou a jornada pelos biomas brasileiros!</p>
+      <p>Sua pontuação final: {{ pontos }} pontos</p>
+      <button mat-raised-button color="primary" (click)="reiniciarJogo()">
+        Jogar Novamente
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-progress-bar [value]="progresso"></mat-progress-bar>
+</div>
