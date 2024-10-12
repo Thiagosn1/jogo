@@ -2,15 +2,15 @@
   <h2>Jogo da Memória</h2>
   <div class="cartas-grid">
     <mat-card *ngFor="let carta of cartas" (click)="virarCarta(carta)">
-      <img
-        *ngIf="carta.virada || carta.encontrada"
-        [src]="carta.imagem"
-        [alt]="carta.nome"
-      />
       <div
-        *ngIf="!carta.virada && !carta.encontrada"
-        class="carta-costas"
-      ></div>
+        class="mat-card-inner"
+        [ngClass]="{ virada: carta.virada || carta.encontrada }"
+      >
+        <div class="carta-frente">
+          <img [src]="carta.imagem" [alt]="carta.nome" />
+        </div>
+        <div class="carta-costas"></div>
+      </div>
     </mat-card>
   </div>
   <button mat-raised-button color="primary" (click)="reiniciarJogo()">

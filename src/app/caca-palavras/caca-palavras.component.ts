@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
+import { PontuacaoService } from '../pontuacao.service';
+import { HttpClientModule } from '@angular/common/http';
 
 interface Palavra {
   palavra: string;
@@ -18,7 +20,7 @@ interface Celula {
 @Component({
   selector: 'app-caca-palavras',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, HttpClientModule],
   templateUrl: './caca-palavras.component.html',
   styleUrls: ['./caca-palavras.component.css'],
 })
@@ -35,8 +37,12 @@ export class CacaPalavrasComponent implements OnInit {
   ];
   selecaoAtual: string = '';
   direcaoAtual: string = '';
+  mensagemVitoria: string = '';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private pontuacaoService: PontuacaoService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -50,6 +56,7 @@ export class CacaPalavrasComponent implements OnInit {
     this.palavras.forEach((p) => (p.encontrada = false));
     this.selecaoAtual = '';
     this.direcaoAtual = '';
+    this.mensagemVitoria = '';
   }
 
   gerarGrade(): Celula[][] {
@@ -223,13 +230,35 @@ export class CacaPalavrasComponent implements OnInit {
     this.direcaoAtual = '';
   }
 
+  finalizarJogo() {
+    const pontos = this.calcularPontuacao();
+    this.pontuacaoService
+      .salvarPontuacao(this.nomeJogador, pontos, 'caca-palavras')
+      .subscribe({
+        next: (response) => {
+          console.log('Pontuação salva com sucesso', response);
+        },
+        error: (error) => {
+          console.error('Erro ao salvar pontuação', error);
+        },
+      });
+  }
+
   verificarVitoria() {
     if (this.palavras.every((p) => p.encontrada)) {
-      alert(`Parabéns, ${this.nomeJogador}! Você encontrou todas as palavras!`);
+      this.mensagemVitoria = `Parabéns, ${this.nomeJogador}! Você encontrou todas as palavras!`;
     }
   }
 
   reiniciarJogo() {
     this.inicializarJogo();
+  }
+
+  calcularPontuacao(): number {
+    const pontosPorPalavra = 10;
+    const palavrasEncontradas = this.palavras.filter(
+      (p) => p.encontrada
+    ).length;
+    return palavrasEncontradas * pontosPorPalavra;
   }
 }

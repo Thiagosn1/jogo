@@ -32,5 +32,42 @@
     <button mat-raised-button color="primary" (click)="iniciarJogo()">
       JOGAR
     </button>
+
+    <button class="pontuacao" color="accent" (click)="abrirRanking()">
+      RANKING DE PONTUAÇÕES
+    </button>
+  </div>
+
+  <div *ngIf="mostrarRanking" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="fecharRanking()">&times;</span>
+      <h2>Ranking de Pontuações</h2>
+      <div class="ranking-container">
+        <div class="ranking-column">
+          <h4>Jogo da Memória</h4>
+          <ul>
+            <li *ngFor="let pontuacao of pontuacoes['jogo-memoria']">
+              {{ pontuacao.nome }}: {{ pontuacao.pontuacao }}
+            </li>
+          </ul>
+        </div>
+        <div class="ranking-column">
+          <h4>Caça-Palavras</h4>
+          <ul>
+            <li *ngFor="let pontuacao of pontuacoes['caca-palavras']">
+              {{ pontuacao.nome }}: {{ pontuacao.pontuacao }}
+            </li>
+          </ul>
+        </div>
+        <div class="ranking-column">
+          <h4>Quiz</h4>
+          <ul>
+            <li *ngFor="let pontuacao of pontuacoes['quiz']">
+              {{ pontuacao.nome }}: {{ pontuacao.pontuacao }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

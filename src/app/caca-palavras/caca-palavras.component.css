@@ -2,7 +2,7 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
-  text-align: center; /* Centraliza o título e o botão */
+  text-align: center;
 }
 
 .grid-container {
@@ -10,8 +10,8 @@
   border: 1px solid #ccc;
   padding: 10px;
   margin-bottom: 20px;
-  max-width: 100%; /* Garante que o grid container não ultrapasse os limites do card */
-  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .grid-row {
@@ -31,18 +31,18 @@
 }
 
 .botao-encontrado {
-  background-color: #4caf50; /* Define a cor de fundo para botões encontrados */
-  color: #000000; /* Garante que o texto do botão seja visível */
+  background-color: #4caf50;
+  color: #000000;
 }
 
 .palavras-lista {
   margin-top: 20px;
-  text-align: center; /* Centraliza o conteúdo da div */
+  text-align: center;
 }
 
 .palavras-lista ul {
-  list-style-type: none; /* Remove o ponto de lista dos itens <li> */
-  padding: 0; /* Remove o padding padrão do ul */
+  list-style-type: none;
+  padding: 0;
 }
 
 .encontrada {
@@ -54,7 +54,13 @@ button {
   margin-top: 20px;
 }
 
-/* Adiciona sombreamento ao mat-card */
 .jogo-caca-palavras-container mat-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.mensagem-vitoria {
+  margin-top: 16px;
+  font-size: 16px;
+  color: green;
+  text-align: center;
 }

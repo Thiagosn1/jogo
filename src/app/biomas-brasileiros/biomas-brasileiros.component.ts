@@ -7,6 +7,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { PontuacaoService } from '../pontuacao.service';
+import { HttpClientModule } from '@angular/common/http';
 
 interface Desafio {
   pergunta: string;
@@ -34,6 +36,7 @@ interface Bioma {
     MatIconModule,
     MatButtonToggleModule,
     MatProgressBarModule,
+    HttpClientModule,
   ],
   templateUrl: './biomas-brasileiros.component.html',
   styleUrls: ['./biomas-brasileiros.component.css'],
@@ -177,7 +180,11 @@ export class BiomasBrasileirosComponent implements OnInit {
   jogoFinalizado = false;
   tipoJogo: string = 'quiz';
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private pontuacaoService: PontuacaoService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -227,6 +234,20 @@ export class BiomasBrasileirosComponent implements OnInit {
 
   finalizarJogo(): void {
     this.jogoFinalizado = true;
+    this.salvarPontuacao();
+  }
+
+  salvarPontuacao() {
+    this.pontuacaoService
+      .salvarPontuacao(this.nomeJogador, this.pontos, this.tipoJogo)
+      .subscribe({
+        next: (response) => {
+          console.log('Pontuação salva com sucesso', response);
+        },
+        error: (error) => {
+          console.error('Erro ao salvar pontuação', error);
+        },
+      });
   }
 
   reiniciarJogo(): void {

@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
+import { PontuacaoService } from '../pontuacao.service';
+import { HttpClientModule } from '@angular/common/http';
 
 interface CartaMemoria {
   id: number;
@@ -15,7 +17,7 @@ interface CartaMemoria {
 @Component({
   selector: 'app-jogo-memoria',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, HttpClientModule],
   templateUrl: './jogo-memoria.component.html',
   styleUrls: ['./jogo-memoria.component.css'],
 })
@@ -37,7 +39,10 @@ export class JogoMemoriaComponent implements OnInit {
     Pantanal: 'O Pantanal é a maior planície alagável do mundo.',
   };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private pontuacaoService: PontuacaoService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -105,10 +110,25 @@ export class JogoMemoriaComponent implements OnInit {
     }
     this.cartasViradas = [];
 
+    this.verificarVitoria();
+  }
+
+  verificarVitoria() {
     if (this.cartas.every((carta) => carta.encontrada)) {
       const pontos = this.acertos * 10 - this.erros * 5;
       this.mensagem = `Parabéns, você encontrou todos os biomas!`;
       this.curiosidade = `Pontuação: ${pontos} pontos.`;
+
+      this.pontuacaoService
+        .salvarPontuacao(this.nomeJogador, pontos, 'jogo-memoria')
+        .subscribe({
+          next: (response) => {
+            console.log('Pontuação salva com sucesso', response);
+          },
+          error: (error) => {
+            console.error('Erro ao salvar pontuação', error);
+          },
+        });
     }
   }
 

@@ -70,7 +70,12 @@ h2 {
   font-weight: 500;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
-  border-radius: 8px;
+}
+
+.modal-content h2 {
+  text-shadow: none; 
+  background-color: transparent;
+  text-align: center; 
 }
 
 .input-container {
@@ -119,6 +124,90 @@ mat-radio-button {
   margin-bottom: 10px;
 }
 
+.pontuacao {
+  margin-top: 20px;
+}
+
+.ranking-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  width: 300px;
+  max-width: 90%;
+  text-align: left;
+}
+
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+  color: red;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ranking-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ranking-column {
+  flex: 1;
+  padding: 10px;
+  background-color: rgba(240, 240, 240, 0.9);
+  border-radius: 5px;
+  margin: 0 10px;
+  text-align: center; 
+}
+
+.ranking-column h4 {
+  font-size: 1.5rem; 
+  margin-bottom: 10px; 
+}
+
+.ranking-column ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ranking-column li {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+
 @media (max-width: 768px) {
   .background-images {
     flex-wrap: wrap;
@@ -134,6 +223,10 @@ mat-radio-button {
 
   h2 {
     font-size: 1.5em;
+  }
+
+  .ranking-column {
+    margin: 0;
   }
 }
 
