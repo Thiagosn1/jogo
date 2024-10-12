@@ -101,6 +101,24 @@ button:hover {
   background-color: #45a049;
 }
 
+.game-options {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 300px;
+  max-width: 90%;
+}
+
+mat-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-radio-button {
+  margin-bottom: 10px;
+}
+
 @media (max-width: 768px) {
   .background-images {
     flex-wrap: wrap;

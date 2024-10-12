@@ -21,6 +21,14 @@
       </mat-form-field>
     </div>
 
+    <div class="game-options">
+      <mat-radio-group [(ngModel)]="tipoJogo">
+        <mat-radio-button value="quiz">Quiz</mat-radio-button>
+        <mat-radio-button value="memoria">Jogo da Memória</mat-radio-button>
+        <mat-radio-button value="cacapalavras">Caça Palavras</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
     <button mat-raised-button color="primary" (click)="iniciarJogo()">
       JOGAR
     </button>

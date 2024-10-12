@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 interface Desafio {
   pergunta: string;
@@ -174,12 +175,20 @@ export class BiomasBrasileirosComponent implements OnInit {
   mostrarResposta = false;
   respostaSelecionada: number | null = null;
   jogoFinalizado = false;
+  tipoJogo: string = 'quiz';
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       this.nomeJogador = params['nome'] || 'Jogador';
+      this.tipoJogo = params['tipo'] || 'quiz';
+
+      if (this.tipoJogo !== 'quiz') {
+        this.router.navigate([`/${this.tipoJogo}`], {
+          queryParams: { nome: this.nomeJogador },
+        });
+      }
     });
   }
 

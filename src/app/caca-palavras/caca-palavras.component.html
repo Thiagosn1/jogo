@@ -1,0 +1,34 @@
+<div class="jogo-caca-palavras-container">
+  <h2>Caça Palavras</h2>
+  <mat-card>
+    <mat-card-content>
+      <div class="grid-container">
+        <div *ngFor="let linha of grade; let i = index" class="grid-row">
+          <button
+            *ngFor="let celula of linha; let j = index"
+            (click)="selecionarLetra(i, j)"
+            [class.selecionada]="celula.selecionada"
+            [class.botao-encontrado]="celula.encontrada"
+            mat-button
+          >
+            {{ celula.letra }}
+          </button>
+        </div>
+      </div>
+      <div class="palavras-lista">
+        <h3>Palavras para encontrar</h3>
+        <ul>
+          <li
+            *ngFor="let palavra of palavras"
+            [class.encontrada]="palavra.encontrada"
+          >
+            {{ palavra.palavra }}
+          </li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <button mat-raised-button color="primary" (click)="reiniciarJogo()">
+    Reiniciar Jogo
+  </button>
+</div>

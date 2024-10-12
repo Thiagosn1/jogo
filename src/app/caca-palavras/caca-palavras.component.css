@@ -1,0 +1,60 @@
+.jogo-caca-palavras-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center; /* Centraliza o título e o botão */
+}
+
+.grid-container {
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  max-width: 100%; /* Garante que o grid container não ultrapasse os limites do card */
+  box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+}
+
+.grid-row {
+  display: flex;
+}
+
+.grid-row button {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  padding: 0;
+  font-weight: bold;
+}
+
+.selecionada {
+  background-color: #ffeb3b;
+}
+
+.botao-encontrado {
+  background-color: #4caf50; /* Define a cor de fundo para botões encontrados */
+  color: #000000; /* Garante que o texto do botão seja visível */
+}
+
+.palavras-lista {
+  margin-top: 20px;
+  text-align: center; /* Centraliza o conteúdo da div */
+}
+
+.palavras-lista ul {
+  list-style-type: none; /* Remove o ponto de lista dos itens <li> */
+  padding: 0; /* Remove o padding padrão do ul */
+}
+
+.encontrada {
+  text-decoration: line-through;
+  color: #4caf50;
+}
+
+button {
+  margin-top: 20px;
+}
+
+/* Adiciona sombreamento ao mat-card */
+.jogo-caca-palavras-container mat-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
