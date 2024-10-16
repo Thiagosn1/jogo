@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PontuacaoService } from '../pontuacao.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -41,6 +41,7 @@ export class JogoMemoriaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private pontuacaoService: PontuacaoService
   ) {}
 
@@ -134,5 +135,9 @@ export class JogoMemoriaComponent implements OnInit {
 
   reiniciarJogo() {
     this.inicializarCartas();
+  }
+
+  sair() {
+    this.router.navigate(['/']);
   }
 }

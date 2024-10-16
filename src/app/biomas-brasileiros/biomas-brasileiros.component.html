@@ -92,9 +92,12 @@
     <mat-card-content>
       <p>Você completou a jornada pelos biomas brasileiros!</p>
       <p>Sua pontuação final: {{ pontos }} pontos</p>
-      <button mat-raised-button color="primary" (click)="reiniciarJogo()">
-        Jogar Novamente
-      </button>
+      <div class="botoes-container">
+        <button mat-raised-button color="primary" (click)="reiniciarJogo()">
+          Jogar Novamente
+        </button>
+        <button mat-raised-button color="warn" (click)="sair()">Sair</button>
+      </div>
     </mat-card-content>
   </mat-card>
 

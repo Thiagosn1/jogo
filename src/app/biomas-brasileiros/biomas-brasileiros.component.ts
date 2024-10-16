@@ -265,4 +265,8 @@ export class BiomasBrasileirosComponent implements OnInit {
       100
     );
   }
+
+  sair(): void {
+    this.router.navigate(['/']);
+  }
 }

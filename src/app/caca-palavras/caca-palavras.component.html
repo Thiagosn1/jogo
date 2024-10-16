@@ -31,7 +31,9 @@
   <button mat-raised-button color="primary" (click)="reiniciarJogo()">
     Reiniciar Jogo
   </button>
-
+  <button mat-raised-button color="warn" class="botao-sair" (click)="sair()">
+    Sair
+  </button>
   <div *ngIf="mensagemVitoria" class="mensagem-vitoria">
     {{ mensagemVitoria }}
   </div>

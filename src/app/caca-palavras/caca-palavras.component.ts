@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PontuacaoService } from '../pontuacao.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -41,6 +41,7 @@ export class CacaPalavrasComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private pontuacaoService: PontuacaoService
   ) {}
 
@@ -155,13 +156,19 @@ export class CacaPalavrasComponent implements OnInit {
       if (ultimaPosicao) {
         const [ultimaI, ultimaJ] = ultimaPosicao;
 
-        if (i === ultimaI && j === ultimaJ + 1) {
-          this.direcaoAtual = 'horizontal';
-        } else if (i === ultimaI + 1 && j === ultimaJ) {
-          this.direcaoAtual = 'vertical';
-        } else if (i === ultimaI + 1 && j === ultimaJ + 1) {
-          this.direcaoAtual = 'diagonal';
-        } else if (this.direcaoAtual === 'horizontal' && i !== ultimaI) {
+        if (!this.direcaoAtual) {
+          if (i === ultimaI && j === ultimaJ + 1) {
+            this.direcaoAtual = 'horizontal';
+          } else if (i === ultimaI + 1 && j === ultimaJ) {
+            this.direcaoAtual = 'vertical';
+          } else if (i === ultimaI + 1 && j === ultimaJ + 1) {
+            this.direcaoAtual = 'diagonal';
+          } else {
+            return;
+          }
+        }
+
+        if (this.direcaoAtual === 'horizontal' && i !== ultimaI) {
           return;
         } else if (this.direcaoAtual === 'vertical' && j !== ultimaJ) {
           return;
@@ -186,6 +193,7 @@ export class CacaPalavrasComponent implements OnInit {
       return;
     }
 
+    // Verifica se a palavra foi encontrada
     const palavraEncontrada = this.palavras.find(
       (p) => p.palavra === this.selecaoAtual
     );
@@ -260,5 +268,9 @@ export class CacaPalavrasComponent implements OnInit {
       (p) => p.encontrada
     ).length;
     return palavrasEncontradas * pontosPorPalavra;
+  }
+
+  sair() {
+    this.router.navigate(['/']);
   }
 }

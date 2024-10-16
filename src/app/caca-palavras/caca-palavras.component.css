@@ -54,6 +54,17 @@ button {
   margin-top: 20px;
 }
 
+.botao-sair {
+  margin-left: 10px;
+}
+
+.botao-sair {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
 .jogo-caca-palavras-container mat-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
