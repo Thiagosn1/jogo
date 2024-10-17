@@ -1,3 +1,9 @@
+::ng-deep
+  .mat-button-toggle-appearance-standard
+  .mat-button-toggle-label-content {
+  line-height: 35px !important;
+}
+
 .jogo-container {
   height: 100vh;
   display: flex;
@@ -46,6 +52,10 @@ mat-button-toggle-group {
 
 mat-button-toggle {
   margin-bottom: 10px;
+  text-align: left;
+  width: 100%;
+  white-space: normal;
+  line-height: 1.2;
 }
 
 .respostas {
@@ -56,6 +66,14 @@ mat-button-toggle {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 5px;
+  text-align: left;
+  line-height: 1.2;
+}
+
+em {
+  text-align: justify;
+  display: block;
+  margin-top: 10px;
 }
 
 .respostas .correta {
@@ -81,6 +99,10 @@ mat-progress-bar {
 mat-list-item {
   height: auto !important;
   margin-bottom: 10px;
+}
+
+.descricao-bioma {
+  text-align: justify;
 }
 
 @media (max-width: 600px) {
