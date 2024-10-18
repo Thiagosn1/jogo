@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,7 @@ interface Celula {
   templateUrl: './caca-palavras.component.html',
   styleUrls: ['./caca-palavras.component.css'],
 })
-export class CacaPalavrasComponent implements OnInit {
+export class CacaPalavrasComponent implements OnInit, OnDestroy {
   nomeJogador: string = '';
   grade: Celula[][] = [];
   palavras: Palavra[] = [
@@ -38,6 +38,9 @@ export class CacaPalavrasComponent implements OnInit {
   selecaoAtual: string = '';
   direcaoAtual: string = '';
   mensagemVitoria: string = '';
+  cronometro: number = 0;
+  cronometroDisplay: string = '00:00';
+  intervalo: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,12 +55,19 @@ export class CacaPalavrasComponent implements OnInit {
     this.inicializarJogo();
   }
 
+  ngOnDestroy() {
+    if (this.intervalo) {
+      clearInterval(this.intervalo);
+    }
+  }
+
   inicializarJogo() {
     this.grade = this.gerarGrade();
     this.palavras.forEach((p) => (p.encontrada = false));
     this.selecaoAtual = '';
     this.direcaoAtual = '';
     this.mensagemVitoria = '';
+    this.iniciarCronometro();
   }
 
   gerarGrade(): Celula[][] {
@@ -193,7 +203,6 @@ export class CacaPalavrasComponent implements OnInit {
       return;
     }
 
-    // Verifica se a palavra foi encontrada
     const palavraEncontrada = this.palavras.find(
       (p) => p.palavra === this.selecaoAtual
     );
@@ -238,6 +247,36 @@ export class CacaPalavrasComponent implements OnInit {
     this.direcaoAtual = '';
   }
 
+  iniciarCronometro() {
+    this.cronometro = 0;
+    this.cronometroDisplay = '00:00';
+    if (this.intervalo) {
+      clearInterval(this.intervalo);
+    }
+    this.intervalo = setInterval(() => {
+      this.cronometro++;
+      const minutos = Math.floor(this.cronometro / 60);
+      const segundos = this.cronometro % 60;
+      this.cronometroDisplay = `${this.pad(minutos)}:${this.pad(segundos)}`;
+    }, 1000);
+  }
+
+  pad(value: number): string {
+    return value < 10 ? `0${value}` : `${value}`;
+  }
+
+  calcularPontuacao(): number {
+    const pontuacaoInicial = 200;
+    const tempoDecorrido = this.cronometro;
+    const penalidadePorSegundo = 1; // Penalidade de 1 ponto por segundo
+
+    const pontuacaoFinal = Math.max(
+      0,
+      pontuacaoInicial - tempoDecorrido * penalidadePorSegundo
+    );
+    return pontuacaoFinal;
+  }
+
   finalizarJogo() {
     const pontos = this.calcularPontuacao();
     this.pontuacaoService
@@ -254,20 +293,14 @@ export class CacaPalavrasComponent implements OnInit {
 
   verificarVitoria() {
     if (this.palavras.every((p) => p.encontrada)) {
+      clearInterval(this.intervalo); // Para o cronômetro
       this.mensagemVitoria = `Parabéns, ${this.nomeJogador}! Você encontrou todas as palavras!`;
+      this.finalizarJogo();
     }
   }
 
   reiniciarJogo() {
     this.inicializarJogo();
-  }
-
-  calcularPontuacao(): number {
-    const pontosPorPalavra = 10;
-    const palavrasEncontradas = this.palavras.filter(
-      (p) => p.encontrada
-    ).length;
-    return palavrasEncontradas * pontosPorPalavra;
   }
 
   sair() {

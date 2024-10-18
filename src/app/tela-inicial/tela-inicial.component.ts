@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { Router } from '@angular/router';
-import { PontuacaoService } from '../pontuacao.service'; // Importe o serviço de pontuação
+import { PontuacaoService } from '../pontuacao.service';
 
 interface Pontuacao {
   nome: string;
@@ -53,20 +53,36 @@ export class TelaInicialComponent {
   abrirRanking() {
     this.pontuacaoService.obterPontuacoes().subscribe(
       (data: Pontuacao[]) => {
-        this.pontuacoes = data.reduce(
-          (acc: { [key: string]: Pontuacao[] }, pontuacao: Pontuacao) => {
+        const pontuacoesFiltradas = data.reduce(
+          (
+            acc: { [key: string]: { [nome: string]: Pontuacao } },
+            pontuacao: Pontuacao
+          ) => {
+            const nomeTrimmed = pontuacao.nome.trim(); // Remove espaços em branco
             if (!acc[pontuacao.tipoJogo]) {
-              acc[pontuacao.tipoJogo] = [];
+              acc[pontuacao.tipoJogo] = {};
             }
-            acc[pontuacao.tipoJogo].push(pontuacao);
+            if (
+              !acc[pontuacao.tipoJogo][nomeTrimmed] ||
+              acc[pontuacao.tipoJogo][nomeTrimmed].pontuacao <
+                pontuacao.pontuacao
+            ) {
+              acc[pontuacao.tipoJogo][nomeTrimmed] = pontuacao;
+            }
             return acc;
           },
           {}
         );
 
-        for (const tipo in this.pontuacoes) {
-          this.pontuacoes[tipo].sort((a, b) => b.pontuacao - a.pontuacao);
-        }
+        this.pontuacoes = Object.keys(pontuacoesFiltradas).reduce(
+          (acc: { [key: string]: Pontuacao[] }, tipo: string) => {
+            acc[tipo] = Object.values(pontuacoesFiltradas[tipo]).sort(
+              (a, b) => b.pontuacao - a.pontuacao
+            );
+            return acc;
+          },
+          {}
+        );
 
         this.mostrarRanking = true;
       },

@@ -75,3 +75,8 @@ button {
   color: green;
   text-align: center;
 }
+
+.timer {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
