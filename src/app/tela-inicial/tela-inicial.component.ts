@@ -11,6 +11,7 @@ interface Pontuacao {
   nome: string;
   pontuacao: number;
   tipoJogo: string;
+  id: string;
 }
 
 @Component({
@@ -53,41 +54,63 @@ export class TelaInicialComponent {
   abrirRanking() {
     this.pontuacaoService.obterPontuacoes().subscribe(
       (data: Pontuacao[]) => {
-        const pontuacoesFiltradas = data.reduce(
-          (
-            acc: { [key: string]: { [nome: string]: Pontuacao } },
-            pontuacao: Pontuacao
-          ) => {
-            const nomeTrimmed = pontuacao.nome.trim(); // Remove espaços em branco
-            if (!acc[pontuacao.tipoJogo]) {
-              acc[pontuacao.tipoJogo] = {};
-            }
-            if (
-              !acc[pontuacao.tipoJogo][nomeTrimmed] ||
-              acc[pontuacao.tipoJogo][nomeTrimmed].pontuacao <
-                pontuacao.pontuacao
-            ) {
-              acc[pontuacao.tipoJogo][nomeTrimmed] = pontuacao;
-            }
-            return acc;
-          },
-          {}
-        );
+        const dadosNormalizados = data.map((pontuacao) => ({
+          ...pontuacao,
+          nome: pontuacao.nome.trim().toLowerCase(),
+        }));
 
-        this.pontuacoes = Object.keys(pontuacoesFiltradas).reduce(
-          (acc: { [key: string]: Pontuacao[] }, tipo: string) => {
-            acc[tipo] = Object.values(pontuacoesFiltradas[tipo]).sort(
-              (a, b) => b.pontuacao - a.pontuacao
-            );
-            return acc;
-          },
-          {}
-        );
+        const pontuacoesUnicas: { [nomeETipo: string]: Pontuacao } = {};
 
+        dadosNormalizados.forEach((pontuacao) => {
+          const chave = `${pontuacao.nome}-${pontuacao.tipoJogo}`;
+
+          if (
+            !pontuacoesUnicas[chave] ||
+            pontuacao.pontuacao > pontuacoesUnicas[chave].pontuacao ||
+            (pontuacao.pontuacao === pontuacoesUnicas[chave].pontuacao &&
+              Number(pontuacao.id) > Number(pontuacoesUnicas[chave].id))
+          ) {
+            pontuacoesUnicas[chave] = pontuacao;
+          }
+        });
+
+        const pontuacoesPorTipo: {
+          'jogo-memoria': Pontuacao[];
+          'caca-palavras': Pontuacao[];
+          quiz: Pontuacao[];
+        } = {
+          'jogo-memoria': [],
+          'caca-palavras': [],
+          quiz: [],
+        };
+
+        Object.values(pontuacoesUnicas).forEach((pontuacao) => {
+          pontuacoesPorTipo[
+            pontuacao.tipoJogo as keyof typeof pontuacoesPorTipo
+          ].push({
+            ...pontuacao,
+            nome:
+              pontuacao.nome.charAt(0).toUpperCase() + pontuacao.nome.slice(1),
+          });
+        });
+
+        Object.keys(pontuacoesPorTipo).forEach((tipo) => {
+          pontuacoesPorTipo[tipo as keyof typeof pontuacoesPorTipo].sort(
+            (a: Pontuacao, b: Pontuacao) => {
+              if (b.pontuacao !== a.pontuacao) {
+                return b.pontuacao - a.pontuacao;
+              } else {
+                return Number(b.id) - Number(a.id);
+              }
+            }
+          );
+        });
+
+        this.pontuacoes = pontuacoesPorTipo;
         this.mostrarRanking = true;
       },
       (error) => {
-        console.error('Erro ao obter pontuações', error);
+        console.error('Erro ao obter pontuações:', error);
       }
     );
   }
