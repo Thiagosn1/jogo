@@ -24,7 +24,7 @@ interface Celula {
   templateUrl: './caca-palavras.component.html',
   styleUrls: ['./caca-palavras.component.css'],
 })
-export class CacaPalavrasComponent implements OnInit, OnDestroy {
+export class CacaPalavrasComponent implements OnInit/* , OnDestroy */ {
   nomeJogador: string = '';
   grade: Celula[][] = [];
   palavras: Palavra[] = [
@@ -38,9 +38,9 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
   selecaoAtual: string = '';
   direcaoAtual: string = '';
   mensagemVitoria: string = '';
-  cronometro: number = 0;
-  cronometroDisplay: string = '00:00';
-  intervalo: any;
+  // cronometro: number = 0;
+  // cronometroDisplay: string = '00:00';
+  // intervalo: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,11 +55,11 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
     this.inicializarJogo();
   }
 
-  ngOnDestroy() {
+  /* ngOnDestroy() {
     if (this.intervalo) {
       clearInterval(this.intervalo);
     }
-  }
+  } */
 
   inicializarJogo() {
     this.grade = this.gerarGrade();
@@ -67,7 +67,7 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
     this.selecaoAtual = '';
     this.direcaoAtual = '';
     this.mensagemVitoria = '';
-    this.iniciarCronometro();
+    // this.iniciarCronometro();
   }
 
   gerarGrade(): Celula[][] {
@@ -247,7 +247,7 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
     this.direcaoAtual = '';
   }
 
-  iniciarCronometro() {
+  /* iniciarCronometro() {
     this.cronometro = 0;
     this.cronometroDisplay = '00:00';
     if (this.intervalo) {
@@ -263,9 +263,9 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
 
   pad(value: number): string {
     return value < 10 ? `0${value}` : `${value}`;
-  }
+  } */
 
-  calcularPontuacao(): number {
+  /* calcularPontuacao(): number {
     const pontuacaoInicial = 200;
     const tempoDecorrido = this.cronometro;
     const penalidadePorSegundo = 1; // Penalidade de 1 ponto por segundo
@@ -275,10 +275,10 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
       pontuacaoInicial - tempoDecorrido * penalidadePorSegundo
     );
     return pontuacaoFinal;
-  }
+  } */
 
   finalizarJogo() {
-    const pontos = this.calcularPontuacao();
+    const pontos = 100;
     this.pontuacaoService
       .salvarPontuacao(this.nomeJogador, pontos, 'caca-palavras')
       .subscribe({
@@ -293,7 +293,7 @@ export class CacaPalavrasComponent implements OnInit, OnDestroy {
 
   verificarVitoria() {
     if (this.palavras.every((p) => p.encontrada)) {
-      clearInterval(this.intervalo); // Para o cronômetro
+      // clearInterval(this.intervalo); // Para o cronômetro
       this.mensagemVitoria = `Parabéns, ${this.nomeJogador}! Você encontrou todas as palavras!`;
       this.finalizarJogo();
     }
